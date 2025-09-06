@@ -17,9 +17,9 @@ namespace task_manager_api.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllTasksAsync([FromQuery] Guid status, int pageNo, int pageSize)
+        public async Task<IActionResult> GetAllTasksAsync([FromQuery] Guid statusId, int pageNo, int pageSize)
         {
-            var tasks = await _userTaskService.GetUserTasksAsync(status, pageNo, pageSize);
+            var tasks = await _userTaskService.GetUserTasksAsync(statusId, pageNo, pageSize);
 
             return Ok(tasks);
         }
