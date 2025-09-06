@@ -18,6 +18,7 @@ namespace task_manager_api.Services
             return await _context
                 .UserTasks
                 .Where(x => x.StatusId == statusId)
+                .OrderBy(x => x.CreateDate)
                 .Skip(pageSize*(pageNo-1))
                 .Take(pageSize)
                 .ToListAsync();
