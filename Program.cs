@@ -1,14 +1,20 @@
-using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using task_manager_api;
+using task_manager_api.Interfaces;
+using task_manager_api.Services;
 
+#region Dependency Injection
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication().AddJwtBearer(options =>
 {
-    var bytes = Encoding.UTF8.GetBytes(builder.Configuration["Authentication:IssuerSigningKey"]!) ;
+    var bytes = Encoding.UTF8.GetBytes(builder.Configuration["Authentication:IssuerSigningKey"]!);
 
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -18,7 +24,15 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
         ValidIssuer = builder.Configuration["Authentication:ValidIssuer"]
     };
 });
+builder.Services.AddDbContextPool<ApplicationDbContext>(options => 
+    options
+    .UseNpgsql(connectionString: builder.Configuration["ConnectionStrings:DefaultConnection"])
+    .UseSnakeCaseNamingConvention());
 
+builder.Services.AddScoped<IUserTaskService, UserTaskService>();
+#endregion
+
+#region Middleware Configuration
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -29,31 +43,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/weatherforecast", () =>
-{
-    var summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+app.UseAuthentication();
 
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-        
-    return forecast;
-})
-.RequireAuthorization()
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+#endregion
