@@ -6,7 +6,7 @@
         public required string Title { get; set; }
         public string? Description { get; set; }
         public DateOnly? DueDate { get; set; }
-        public Guid StatusId { get; set; }
+        public int StatusId { get; set; }
         public Status Status { get; }
         public DateTime CreateDate { get; set; } = DateTime.UtcNow;
     }

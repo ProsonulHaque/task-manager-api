@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using task_manager_api;
@@ -11,9 +12,11 @@ using task_manager_api;
 namespace task_manager_api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250907075337_RemovedStatusIdColumn")]
+    partial class RemovedStatusIdColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,13 +28,6 @@ namespace task_manager_api.Migrations
 
             modelBuilder.Entity("task_manager_api.Entities.Status", b =>
                 {
-                    b.Property<int>("StatusId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("status_id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("StatusId"));
-
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
@@ -42,9 +38,6 @@ namespace task_manager_api.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
-
-                    b.HasKey("StatusId")
-                        .HasName("pk_statuses");
 
                     b.ToTable("statuses", "public");
                 });
@@ -71,10 +64,6 @@ namespace task_manager_api.Migrations
                         .HasColumnType("date")
                         .HasColumnName("due_date");
 
-                    b.Property<int>("StatusId")
-                        .HasColumnType("integer")
-                        .HasColumnName("status_id");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text")
@@ -83,25 +72,7 @@ namespace task_manager_api.Migrations
                     b.HasKey("UserTaskId")
                         .HasName("pk_user_tasks");
 
-                    b.HasIndex("StatusId")
-                        .HasDatabaseName("ix_user_tasks_status_id");
-
                     b.ToTable("user_tasks", "public");
-                });
-
-            modelBuilder.Entity("task_manager_api.Entities.UserTask", b =>
-                {
-                    b.HasOne("task_manager_api.Entities.Status", null)
-                        .WithMany("UserTasks")
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_user_tasks_statuses_status_id");
-                });
-
-            modelBuilder.Entity("task_manager_api.Entities.Status", b =>
-                {
-                    b.Navigation("UserTasks");
                 });
 #pragma warning restore 612, 618
         }

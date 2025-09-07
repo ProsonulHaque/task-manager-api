@@ -30,7 +30,7 @@ namespace task_manager_api
 
             modelBuilder.Entity<Status>()
                 .Property(x => x.StatusId)
-                .HasDefaultValueSql("uuid_generate_v4()");
+                .UseIdentityByDefaultColumn();
 
             modelBuilder.Entity<Status>()
                 .Property(x => x.CreateDate)

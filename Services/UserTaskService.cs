@@ -13,7 +13,7 @@ namespace task_manager_api.Services
             _context = context;
         }
 
-        public async Task<List<UserTask>> GetUserTasksAsync(Guid statusId, int pageNo, int pageSize)
+        public async Task<List<UserTask>> GetUserTasksAsync(int statusId, int pageNo, int pageSize)
         {
             return await _context
                 .UserTasks
