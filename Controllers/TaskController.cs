@@ -6,20 +6,21 @@ namespace task_manager_api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserTaskController : ControllerBase
+    public class TaskController : ControllerBase
     {
-        private readonly IUserTaskService _userTaskService;
+        private readonly ITaskService _taskService;
 
-        public UserTaskController(IUserTaskService userTaskService)
+        public TaskController(ITaskService taskService)
         {
-            _userTaskService = userTaskService;
+            _taskService = taskService;
         }
+
 
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetAllTasksAsync([FromQuery] int statusId, int pageNo, int pageSize)
         {
-            var tasks = await _userTaskService.GetUserTasksAsync(statusId, pageNo, pageSize);
+            var tasks = await _taskService.GetTasksAsync(statusId, pageNo, pageSize);
 
             return Ok(tasks);
         }

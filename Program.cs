@@ -29,7 +29,7 @@ builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
     .UseNpgsql(connectionString: builder.Configuration["ConnectionStrings:DefaultConnection"])
     .UseSnakeCaseNamingConvention());
 
-builder.Services.AddScoped<IUserTaskService, UserTaskService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
 #endregion
 
 #region Middleware Configuration

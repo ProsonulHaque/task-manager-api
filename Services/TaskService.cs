@@ -4,16 +4,16 @@ using task_manager_api.Interfaces;
 
 namespace task_manager_api.Services
 {
-    public class UserTaskService : IUserTaskService
+    public class TaskService : ITaskService
     {
         private readonly ApplicationDbContext _context;
 
-        public UserTaskService(ApplicationDbContext context)
+        public TaskService(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<List<UserTask>> GetUserTasksAsync(int statusId, int pageNo, int pageSize)
+        public async Task<List<UserTask>> GetTasksAsync(int statusId, int pageNo, int pageSize)
         {
             return await _context
                 .UserTasks
