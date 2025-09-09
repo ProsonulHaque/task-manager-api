@@ -10,5 +10,6 @@ The task-manager-api application exposes REST APIs to be consumed by the task-ma
 ## Technical Specifications
 - Language: C#
 - Framework: .NET 8.0
+- ORM: EF Core
 - Database: PostgreSQL
 - Identity Platform: Supabase
