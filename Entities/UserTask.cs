@@ -8,6 +8,6 @@
         public DateOnly? DueDate { get; set; }
         public int StatusId { get; set; }
         public Status Status { get; }
-        public DateTime CreateDate { get; set; } = DateTime.UtcNow;
+        public DateTime CreateDateUtc { get; set; }
     }
 }
