@@ -7,7 +7,7 @@
         public string? Description { get; set; }
         public DateOnly? DueDate { get; set; }
         public int StatusId { get; set; }
-        public Status Status { get; }
+        public Status Status { get; set; }
         public DateTime CreateDateUtc { get; set; }
     }
 }
