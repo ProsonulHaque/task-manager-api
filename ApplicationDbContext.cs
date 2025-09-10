@@ -11,19 +11,6 @@ namespace task_manager_api
         {
             modelBuilder.HasDefaultSchema("public");
 
-            #region UserTask
-            modelBuilder.Entity<UserTask>()
-                .HasKey(x => x.UserTaskId);
-
-            modelBuilder.Entity<UserTask>()
-                .Property(x => x.UserTaskId)
-                .HasDefaultValueSql("uuid_generate_v4()");
-
-            modelBuilder.Entity<UserTask>()
-                .Property(x => x.CreateDateUtc)
-                .HasDefaultValueSql("NOW() at time zone 'utc'");
-            #endregion
-
             #region Status
             modelBuilder.Entity<Status>()
                 .HasKey(x => x.StatusId);
@@ -33,6 +20,25 @@ namespace task_manager_api
                 .UseIdentityByDefaultColumn();
 
             modelBuilder.Entity<Status>()
+                .Property(x => x.CreateDateUtc)
+                .HasDefaultValueSql("NOW() at time zone 'utc'");
+
+            modelBuilder.Entity<Status>()
+                .HasMany(x => x.UserTasks)
+                .WithOne(x => x.Status)
+                .HasForeignKey(x => x.StatusId)
+                .HasPrincipalKey(x => x.StatusId);
+            #endregion
+
+            #region UserTask
+            modelBuilder.Entity<UserTask>()
+                .HasKey(x => x.UserTaskId);
+
+            modelBuilder.Entity<UserTask>()
+                .Property(x => x.UserTaskId)
+                .HasDefaultValueSql("uuid_generate_v4()");
+
+            modelBuilder.Entity<UserTask>()
                 .Property(x => x.CreateDateUtc)
                 .HasDefaultValueSql("NOW() at time zone 'utc'");
             #endregion
