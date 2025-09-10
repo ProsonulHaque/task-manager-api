@@ -20,7 +20,7 @@ namespace task_manager_api
                 .HasDefaultValueSql("uuid_generate_v4()");
 
             modelBuilder.Entity<UserTask>()
-                .Property(x => x.CreateDate)
+                .Property(x => x.CreateDateUtc)
                 .HasDefaultValueSql("NOW() at time zone 'utc'");
             #endregion
 
@@ -33,7 +33,7 @@ namespace task_manager_api
                 .UseIdentityByDefaultColumn();
 
             modelBuilder.Entity<Status>()
-                .Property(x => x.CreateDate)
+                .Property(x => x.CreateDateUtc)
                 .HasDefaultValueSql("NOW() at time zone 'utc'");
             #endregion
         }
